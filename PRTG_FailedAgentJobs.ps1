@@ -12,14 +12,14 @@ $jsonBase = @"
 }
 "@
 
-$Dbs = Get-DbaDbState -SqlInstance $SqlInstance
+$Jobs = Get-DbaAgentJob -SqlInstance $SqlInstance | Where-Object { $_.LastRunOutcome -ne "Succeeded" }
 $json = ConvertFrom-Json $jsonBase
-Foreach ($Db in $Dbs) {
+Foreach ($Job in $Jobs) {
     $Obj = [PSCustomObject]@{
-        Channel = $($Db.DatabaseName)
-        Value = $($Db.Status)
+        Channel = $($Job.Name)
+        Value = $($Job.LastRunOutcome)
         } #EndPSCustomObject
     $json.prtg.result += $Obj
 }
 
-Return $json | ConvertTo-Json -Depth 10
+Return $($json | ConvertTo-Json)
