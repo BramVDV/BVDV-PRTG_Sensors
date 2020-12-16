@@ -29,6 +29,7 @@ Foreach ($Db in $Dbs) {
     $Obj = [PSCustomObject]@{
         Channel = $($Db.DatabaseName)
         Value = ($DatabaseStatuses.GetEnumerator() | Where-Object { $_.Name -eq $($Db.Status) }).Value
+        valuelookup = "oid.ardo.databasestatus.ovl"
         } #EndPSCustomObject
     $json.prtg.result += $Obj
 }
