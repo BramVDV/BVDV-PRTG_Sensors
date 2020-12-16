@@ -1,6 +1,6 @@
 ##Requires -Module dbatools
 Param (
-    [String]$SqlInstance = "DC2MSQL02-DEV"
+    [String]$SqlInstance = ""
 )
 $jsonBase = @"
 {
@@ -29,7 +29,7 @@ Foreach ($Db in $Dbs) {
     $Obj = [PSCustomObject]@{
         Channel = $($Db.DatabaseName)
         Value = ($DatabaseStatuses.GetEnumerator() | Where-Object { $_.Name -eq $($Db.Status) }).Value
-        valuelookup = "oid.ardo.databasestatus.ovl"
+        valuelookup = "oid.ardo.databasestatus"
         } #EndPSCustomObject
     $json.prtg.result += $Obj
 }
